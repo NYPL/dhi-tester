@@ -1,0 +1,480 @@
+{
+    "id": "12078522",
+    "nyplSource": "sierra-nypl",
+    "nyplType": "bib",
+    "updatedDate": "2012-03-10T16:36:23-05:00",
+    "createdDate": "2008-12-15T16:52:59-05:00",
+    "deletedDate": null,
+    "deleted": false,
+    "locations": [
+      {
+        "code": "slr",
+        "name": "SIBL - Science Industry and Business"
+      }
+    ],
+    "suppressed": false,
+    "lang": {
+      "code": "eng",
+      "name": "English"
+    },
+    "title": "Linkages : OECD and major developing economies.",
+    "author": "",
+    "materialType": {
+      "code": "a",
+      "value": "BOOK/TEXT"
+    },
+    "bibLevel": {
+      "code": "m",
+      "value": "MONOGRAPH"
+    },
+    "publishYear": 1995,
+    "catalogDate": "1995-09-06",
+    "country": {
+      "code": "fr ",
+      "name": "France"
+    },
+    "normTitle": "linkages oecd and major developing economies",
+    "normAuthor": "",
+    "standardNumbers": [
+      "9264144382"
+    ],
+    "controlNumber": "32735689",
+    "fixedFields": {
+      "24": {
+        "label": "Language",
+        "value": "eng",
+        "display": "English"
+      },
+      "25": {
+        "label": "Skip",
+        "value": "0",
+        "display": null
+      },
+      "26": {
+        "label": "Location",
+        "value": "slr  ",
+        "display": "SIBL - Science Industry and Business"
+      },
+      "27": {
+        "label": "COPIES",
+        "value": "1",
+        "display": null
+      },
+      "28": {
+        "label": "Cat. Date",
+        "value": "1995-09-06",
+        "display": null
+      },
+      "29": {
+        "label": "Bib Level",
+        "value": "m",
+        "display": "MONOGRAPH"
+      },
+      "30": {
+        "label": "Material Type",
+        "value": "a",
+        "display": "BOOK/TEXT"
+      },
+      "31": {
+        "label": "Bib Code 3",
+        "value": "-",
+        "display": null
+      },
+      "80": {
+        "label": "Record Type",
+        "value": "b",
+        "display": null
+      },
+      "81": {
+        "label": "Record Number",
+        "value": "12078522",
+        "display": null
+      },
+      "83": {
+        "label": "Created Date",
+        "value": "2008-12-15T16:52:59Z",
+        "display": null
+      },
+      "84": {
+        "label": "Updated Date",
+        "value": "2012-03-10T16:36:23Z",
+        "display": null
+      },
+      "85": {
+        "label": "No. of Revisions",
+        "value": "4",
+        "display": null
+      },
+      "86": {
+        "label": "Agency",
+        "value": "1",
+        "display": null
+      },
+      "89": {
+        "label": "Country",
+        "value": "fr ",
+        "display": "France"
+      },
+      "98": {
+        "label": "PDATE",
+        "value": "2011-08-20T01:01:31Z",
+        "display": null
+      },
+      "107": {
+        "label": "MARC Type",
+        "value": " ",
+        "display": null
+      }
+    },
+    "varFields": [
+      {
+        "fieldTag": "b",
+        "marcTag": "710",
+        "ind1": "2",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Organisation for Economic Co-operation and Development."
+          },
+          {
+            "tag": "b",
+            "content": "Secretariat."
+          }
+        ]
+      },
+      {
+        "fieldTag": "c",
+        "marcTag": "852",
+        "ind1": "8",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "h",
+            "content": "JBF 95-641"
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "651",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Developing countries"
+          },
+          {
+            "tag": "x",
+            "content": "Foreign economic relations"
+          },
+          {
+            "tag": "z",
+            "content": "OECD countries."
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "651",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "OECD countries"
+          },
+          {
+            "tag": "x",
+            "content": "Foreign economic relations"
+          },
+          {
+            "tag": "z",
+            "content": "Developing countries."
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "651",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Developing countries"
+          },
+          {
+            "tag": "x",
+            "content": "Economic conditions."
+          }
+        ]
+      },
+      {
+        "fieldTag": "i",
+        "marcTag": "020",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "9264144382 (pbk.)"
+          }
+        ]
+      },
+      {
+        "fieldTag": "n",
+        "marcTag": "500",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "\" ... a co-operative effort involving many parts of the OECD Secretariat ...\" -- Pref."
+          }
+        ]
+      },
+      {
+        "fieldTag": "n",
+        "marcTag": "504",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Includes bibliographical references."
+          }
+        ]
+      },
+      {
+        "fieldTag": "o",
+        "marcTag": "001",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "32735689",
+        "subfields": null
+      },
+      {
+        "fieldTag": "p",
+        "marcTag": "260",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Paris :"
+          },
+          {
+            "tag": "b",
+            "content": "Organisation for Economic Co-operation and Development,"
+          },
+          {
+            "tag": "c",
+            "content": "c1995."
+          }
+        ]
+      },
+      {
+        "fieldTag": "q",
+        "marcTag": "852",
+        "ind1": "8",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "h",
+            "content": "JBF 95-641"
+          }
+        ]
+      },
+      {
+        "fieldTag": "r",
+        "marcTag": "300",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "183 p. :"
+          },
+          {
+            "tag": "b",
+            "content": "ill. ;"
+          },
+          {
+            "tag": "c",
+            "content": "27 cm."
+          }
+        ]
+      },
+      {
+        "fieldTag": "t",
+        "marcTag": "245",
+        "ind1": "0",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Linkages :"
+          },
+          {
+            "tag": "b",
+            "content": "OECD and major developing economies."
+          }
+        ]
+      },
+      {
+        "fieldTag": "v",
+        "marcTag": "959",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": ".b35454921"
+          },
+          {
+            "tag": "b",
+            "content": "08-03-07"
+          },
+          {
+            "tag": "c",
+            "content": "06-30-95"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "003",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "OCoLC",
+        "subfields": null
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "005",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "19950823094721.0",
+        "subfields": null
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "008",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "950630s1995    fr a     b   i000 0 eng dnamIa ",
+        "subfields": null
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "040",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "YSM"
+          },
+          {
+            "tag": "c",
+            "content": "YSM"
+          },
+          {
+            "tag": "d",
+            "content": "NYP"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "043",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "d------"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "049",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "NYPE"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "997",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "b"
+          },
+          {
+            "tag": "b",
+            "content": "09-06-95"
+          },
+          {
+            "tag": "c",
+            "content": "m"
+          },
+          {
+            "tag": "d",
+            "content": "a"
+          },
+          {
+            "tag": "e",
+            "content": "-"
+          },
+          {
+            "tag": "f",
+            "content": "eng"
+          },
+          {
+            "tag": "g",
+            "content": "fr "
+          },
+          {
+            "tag": "h",
+            "content": "0"
+          }
+        ]
+      },
+      {
+        "fieldTag": "_",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "00000nam  2200265Ia 4500",
+        "subfields": null
+      }
+    ]
+  }
