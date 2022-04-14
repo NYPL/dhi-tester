@@ -4,17 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/mocha test -r dotenv/config --timeout 10000",
+    "create-event": "node ./v1discovery-hybrid-indexer/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile ./v1discovery-hybrid-indexer/config/local-qa.env --ids 12078522 --nyplType bib events/decoded/event1.json events/encoded/12078522.json",
     "start-es": "node -r dotenv/config create-elastic-index.js",
-    "install-inner": "cd ./disovery-hybrid-indexer; npm i",
-    "send-events": "cd ./discovery-hybrid-indexer; for file in ../events/*.json; do aws lambda invoke --function-name \"DiscoveryHybridIndexer\" --endpoint-url \"http://127.0.0.1:3001\" --payload file://$file out.txt --cli-binary-format raw-in-base64-out; done",
-    "start-lambda": "cd ./discovery-hybrid-indexer; sam local start-lambda -t sam.test.yml"
+    "install-v1": "cd ./v1disovery-hybrid-indexer; npm i",
+    "install-v2": "cd ./v2disovery-hybrid-indexer; npm i",
+    "send-events-v1": "cd ./v1discovery-hybrid-indexer; for file in ../events/encoded/*.json; do aws lambda invoke --function-name \"DiscoveryHybridIndexer\" --endpoint-url \"http://127.0.0.1:3001\" --payload file://$file out.txt --cli-binary-format raw-in-base64-out; done",
+    "send-events-v2": "cd ./v2discovery-hybrid-indexer; for file in ../events/encoded/*.json; do aws lambda invoke --function-name \"DiscoveryHybridIndexer\" --endpoint-url \"http://127.0.0.1:3001\" --payload file://$file out.txt --cli-binary-format raw-in-base64-out; done",
+    "start-lambda-v1": "cd ./v1discovery-hybrid-indexer; sam local start-lambda -t sam.test.yml",
+    "start-lambda-v2": "cd ./v2discovery-hybrid-indexer; sam local start-lambda -t sam.test.yml"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.1112.0",
-    "discovery-api-indexer": "git+https://github.com/NYPL-discovery/discovery-api-indexer.git#v1.0.2",
-    "dotenv": "^16.0.0"
+    "axios": "^0.26.1",
+    "chai": "^4.3.6",
+    "discovery-api-indexer": "git+https://github.com/NYPL-discovery/discovery-api-indexer.git#v1.0.3",
+    "dotenv": "^16.0.0",
+    "mocha": "^9.2.2"
   }
 }
