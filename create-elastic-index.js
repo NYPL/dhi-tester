@@ -8,7 +8,9 @@ const init = async () => {
   esUtils.setConnection(esUri)
   // Create new index. Second param, deleteIfExists, ensures that the new index will overwrite
   // and old one with the same name.
-  esUtils.resources.prepare(process.env.ELASTIC_RESOURCES_INDEX_NAME, true)
+  await esUtils.resources.prepare('test-index-v1', true)
+  await esUtils.resources.prepare('test-index-v2', true)
+  console.log('Dropped and recreated test-index-v1 and v2')
 }
 
 init()
