@@ -1,11 +1,11 @@
 # DHI TESTER
-All scripts mentioned in this readme are written to be run from the root directory.
+This repo is a testing framework meant to facilitate comparing output of a new indexer lambda to replace the old discovery-hybrid-indexer (aka DHI). All scripts mentioned in this readme are written to be run from the root directory. Throughout this Readme, v1 refers to the currently deployed version of discovery-hybrid-indexer, and v2 refers to the new indexer that is being tested. Note that the v2 directory needs to have a sam.test.yml file configured with all necessary environment variables. You can use the sam.qa.yml file in the v1 DHI as a template. 
 
 ## How to use the DHI Tester Repo
 
 0. `npm i`
 1. Pull the latest v1 discovery-hybrid-indexer:`npm run pull-dhi`
-2. Pull the new v2 indexer you are testing into a different directory. Name this directory v2-discovery-hybrid-indexer
+2. Pull the new v2 indexer you are testing into a different directory. Name this directory v2-discovery-hybrid-indexer. 
 3. Install v1 as necessary: `npm run install-v2`
 4. Create a blank Elastic Search indexes for v1 and v2 to write to: `npm run start-es`
 5. Start up local lambda for v1: `npm run start-lambda-v1`
