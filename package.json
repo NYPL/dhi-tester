@@ -6,7 +6,7 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha test -r dotenv/config --timeout 10000",
     "create-event": "node ./v1discovery-hybrid-indexer/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile ./v1discovery-hybrid-indexer/config/local-qa.env --ids 12078522 --nyplType bib events/decoded/event1.json events/encoded/12078522.json",
-    "pull-dhi": "cd ./v1discovery-hyrbrid-indexer; git pull origin main",
+    "pull-dhi": "mkdir v1discovery-hybrid-indexer; cd ./v1discovery-hyrbrid-indexer; git clone git@github.com:NYPL/discovery-hybrid-indexer.git",
     "start-es": "node -r dotenv/config create-elastic-index.js",
     "install-v1": "cd ./v1disovery-hybrid-indexer; npm i",
     "install-v2": "cd ./v2disovery-hybrid-indexer; npm i",

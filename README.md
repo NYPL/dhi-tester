@@ -3,16 +3,19 @@ This repo is a testing framework meant to facilitate comparing output of a new i
 
 ## How to use the DHI Tester Repo
 
-0. `npm i`
-1. Pull the latest v1 discovery-hybrid-indexer:`npm run pull-dhi`
-2. Pull the new v2 indexer you are testing into a different directory. Name this directory v2-discovery-hybrid-indexer. 
-3. Install v1 as necessary: `npm run install-v2`
-4. Create a blank Elastic Search indexes for v1 and v2 to write to: `npm run start-es`
-5. Start up local lambda for v1: `npm run start-lambda-v1`
-6. In a separate terminal, send the events to the lambda:
+### Setting up environment:
+0. `nvm use && npm i`
+1. Clone the latest v1 discovery-hybrid-indexer:`npm run pull-dhi`
+2. Clone the new v2 indexer you are testing into a different directory. Name this directory v2-discovery-hybrid-indexer. 
+3. Create a blank Elastic Search indexes for v1 and v2 to write to: `npm run start-es`
+4. Install v1 and v2 as necessary: `npm run install-v2`
+
+### Running tests
+1. Start up local lambda for v1: `npm run start-lambda-v1`
+2. In a separate terminal, send the events to the lambda:
 `npm run send-events-v1`
-7. Repeat steps 3-6 replacing v1 with v2 in the scripts
-8. Check that the ES indices are identical: `npm test`
+3. Repeat steps 3-6 replacing v1 with v2 in the scripts
+4. Check that the ES indices are identical: `npm test`
 
 ## Config
 In addition to the config files required by v1 and v2 indexers, you will need:
