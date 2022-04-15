@@ -19,7 +19,7 @@ describe('v1 writes the same record to elastic search as v2', () => {
     let v2Records = await axios.post(esUri + '/test-index-v2/resource/_search',{})
     v2Records = v2Records.data.hits.hits.map((record) => record._source)
 
-    // This field appears to be added during the indexing process, so they are not equal and don't need to be. 
+    // This field is added during the indexing process, so they are not equal and don't need to be. 
     expect(v1Records.updatedAt && v2Records.updatedAt)
     delete v1Records.updatedAt
     delete v2Records.updatedAt
