@@ -5,10 +5,10 @@ This repo is a testing framework meant to facilitate comparing output of a new i
 
 ### Setting up environment:
 0. `nvm use && npm i`
-1. Clone the latest v1 discovery-hybrid-indexer:`npm run pull-dhi`
+1. Clone the latest v1 discovery-hybrid-indexer:`npm run pull-dhi`. 
 2. Clone the new v2 indexer you are testing into a different directory. Name this directory v2-discovery-hybrid-indexer. 
 3. Create a blank Elastic Search indexes for v1 and v2 to write to: `npm run start-es`
-4. Install v1 and v2 as necessary: `npm run install-v2`
+4. Install v1 and v2 as necessary: `npm run install-v2` or `npm run install-v1`
 
 ### Running tests
 1. Start up local lambda for v1: `npm run start-lambda-v1`

@@ -21,7 +21,7 @@
     "aws-sdk": "^2.1112.0",
     "axios": "^0.26.1",
     "chai": "^4.3.6",
-    "discovery-api-indexer": "git+https://github.com/NYPL-discovery/discovery-api-indexer.git#v1.0.3",
+    "discovery-api-indexer": "git+https://github.com/NYPL-discovery/discovery-api-indexer.git#v1.0.4",
     "dotenv": "^16.0.0",
     "mocha": "^9.2.2"
   }
