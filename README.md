@@ -24,6 +24,7 @@ This repo is a testing framework meant to facilitate comparing output of a new i
 
 ## Config
 In addition to the config files required by v1 and v2 indexers, you will need:
+- .env file in the root of the repo. Add your KMS encrypted AWS_SECRET_ACCESS_KEY and AWS_ACCESS_KEY_ID
 - `sam.test.yml` in the root of v1 and v2. For v1, this should be identical to `sam.qa.yml` in discovery-hybrid-indexer, with one change: replace ELASTIC_SEARCH_RESOURCES_INDEX with test-index-v1 or -v2
 - `decrypted.env` Make sure to gitignore this file. This file needs to contain these decrypted credentials:
 ```
