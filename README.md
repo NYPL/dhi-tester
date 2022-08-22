@@ -15,6 +15,9 @@ This repo is a testing framework meant to facilitate comparing output of a new i
 4. Create a blank Elastic Search indexes for v1 and v2 to write to: `npm run start-es`
 5. Install v1 and v2 as necessary
 
+
+### URIs for indexing
+To update uris.csv, export from this google sheet https://docs.google.com/spreadsheets/d/1a2QKIsRJrEPel2K5znzxnwoREzDWJOMZ6nIfz2EsDRg/edit#gid=0 and save in the root as uris.csv
 ### Running tests
 1. Start up local lambda for v1: `npm run start-lambda-v1`
 2. In a separate terminal, send the events to the lambda:
@@ -33,12 +36,6 @@ NYPL_OAUTH_URL=https://isso.nypl.org/
 NYPL_OAUTH_KEY=[decrypted key]
 NYPL_OAUTH_SECRET=[decrypted secret]
 ```
-
-## Generate avro encoded events:
-
-Making sure you have decrypted credentials in your --envfile, you can use this script to create events to pass into your lambdas. 
-
-`node ./v1discovery-hybrid-indexer/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env --ids <recordId> --nyplType <bib, item, holding?> events/encoded/<outfile>.json events/decoded/<infile>.json`
 
 
 
