@@ -18,20 +18,37 @@ let records = parse(input, {
   columns: true,
   skip_empty_lines: true
 })
-let uris = records.map((record) => NyplSourceMapper.instance().splitIdentifier(record.URI)).filter((record) => Object.keys(record).length === 3)
-console.log(uris)
 
-dataApi = new NyplClient({
+// TO DO: filter out empty record objects
+let urisPlus = records.map((record) => record.URI).map((uri) => NyplSourceMapper.instance().splitIdentifier(uri)).filter((uri) => uri)
+// console.log(urisPlus)
+const dataApi = new NyplClient({
   oauth_key: process.env['NYPL_OAUTH_KEY'],
   base_url: process.env['NYPL_API_BASE_URL'],
   oauth_secret: process.env['NYPL_OAUTH_SECRET'],
   oauth_url: process.env['NYPL_OAUTH_URL']
 })
 
-// records = Promise.all(records.map(async (uri, i) => {
-//   const servicesRecord = await dataApi.get(`bibs/sierra-nypl/${uri}`)
-//   return servicesRecord
-//   // exec(`node ./v1discovery-hybrid-indexer/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env --ids ${uri} --nyplType ${recordType(uri)} events/encoded/event${i}.json events/decoded/<infile>.json`)
-// }))
+records = Promise.all(urisPlus.map(async (uri, i) => {
+  if (uri && uri.type && uri.nyplSource && uri.id) {
+    try {
+      const record = await dataApi.get(`${uri.type}s/${uri.nyplSource}/${uri.id}`)
+      if (record.statusCode !== 404) {
+        fs.writeFile(`./events/decoded/${uri.id}.json`, JSON.stringify(record), err => {
+          if (err) {
+            console.error(err);
+          }
+        })
+        await exec(`node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env --ids ${uri.id} --nyplType ${uri.type} events/decoded/${uri.id}.json events/encoded/${uri.id}.json`, (e) => {
+          if (e) console.error(e)
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+}))
+
 
 module.exports = records
