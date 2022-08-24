@@ -30,20 +30,20 @@ const writeDecodedAndEncodedRecords = async () => {
     try {
       const record = await dataApi.get(`${uri.type}s/${uri.nyplSource}/${uri.id}`)
       if (record.type !== 'exception') {
-        fs.writeFile(`./events/decoded/${uri.id}.json`, JSON.stringify(record), err => {
+        fs.writeFile(`./events/decoded/${uri.id}.json`, JSON.stringify(record.data), err => {
           if (err) {
             console.error(err);
           }
         })
         return uri
-      }
+      } else return { ...uri, exception: true }
     } catch (error) {
       console.log(error)
     }
   }))
 
   const batchedUrisByType = { bib: '', item: '', holding: '' }
-  urisPlus.filter((uri) => uri).forEach((uri) => {
+  urisPlus.filter(uri => !uri.exception).forEach((uri) => {
     batchedUrisByType[uri.type] += `events/decoded/${uri.id}.json,`
   })
 
@@ -51,9 +51,13 @@ const writeDecodedAndEncodedRecords = async () => {
   Promise.all(types.map(async (type) => {
     if (batchedUrisByType[type].length > 1) {
       console.log(type[0].toUpperCase() + type.substring(1), batchedUrisByType[type], '\n')
+      try {
       await exec(`node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env ${batchedUrisByType[type].slice(0, -1)} events/encoded/${type}.json https://platform.nypl.org/api/v0.1/current-schemas/${type[0].toUpperCase() + type.substring(1)}`, (e) => {
         if (e) console.error(e)
       })
+      } catch (e) {
+        console.log(e)
+      }
     }
   }))
 
