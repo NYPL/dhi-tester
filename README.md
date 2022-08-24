@@ -18,10 +18,12 @@ This repo is a testing framework meant to facilitate comparing output of a new i
 
 ### URIs for indexing
 To update uris.csv, export from this google sheet https://docs.google.com/spreadsheets/d/1a2QKIsRJrEPel2K5znzxnwoREzDWJOMZ6nIfz2EsDRg/edit#gid=0 and save in the root as uris.csv
+
+### Update events 
+To write decoded and encoded events to /events, run `npm run update-events`. If faced with the error: `Unable to load module 'csv-parse/sync'`, try running `nvm use`.
 ### Running tests
 1. Start up local lambda for v1: `npm run start-lambda-v1`
-2. In a separate terminal, send the events to the lambda:
-`npm run send-events-v1`
+2. In a separate terminal, send the events to the lambda: `npm run send-events-v1`. Note that send-events-v1 takes about 10 seconds per record.
 3. Repeat steps 3-6 replacing v1 with v2 in the scripts
 4. Check that the ES indices are identical: `npm test`
 

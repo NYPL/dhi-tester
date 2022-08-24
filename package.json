@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha test -r dotenv/config --timeout 10000",
-    "create-event": "node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile v1/config/local-qa.env --ids 12078522 --nyplType bib events/decoded/event1.json events/encoded/12078522.json",
+    "update-events": "node parse-csv.js",
     "start-es": "node -r dotenv/config create-elastic-index.js",
     "send-events-v1": "cd v1; for file in ../events/encoded/*.json; do aws lambda invoke --function-name \"DiscoveryHybridIndexer\" --endpoint-url \"http://127.0.0.1:3001\" --payload file://$file out.txt --cli-binary-format raw-in-base64-out; done",
     "send-events-v2": "cd v2; for file in ../events/encoded/*.json; do aws lambda invoke --function-name \"DiscoveryHybridIndexer\" --endpoint-url \"http://127.0.0.1:3001\" --payload file://$file out.txt --cli-binary-format raw-in-base64-out; done",
