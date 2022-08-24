@@ -17,7 +17,7 @@ const writeDecodedAndEncodedRecords = async () => {
   })
 
   // TO DO: filter out empty record objects
-  let urisPlus = records.map((record) => record.URI).map((uri) => NyplSourceMapper.instance().splitIdentifier(uri)).filter((uri) => uri)
+  let urisPlus = records.map((record) => record.URI).map((uri) => NyplSourceMapper.instance().splitIdentifier(uri)).filter((uri) => uri && uri.type && uri.id && uri.nyplSource)
 
   const dataApi = new NyplClient({
     oauth_key: process.env['NYPL_OAUTH_KEY'],
@@ -26,26 +26,39 @@ const writeDecodedAndEncodedRecords = async () => {
     oauth_url: process.env['NYPL_OAUTH_URL']
   })
 
-  Promise.all(urisPlus.map(async (uri, i) => {
-    if (uri && uri.type && uri.nyplSource && uri.id) {
-      try {
-        const record = await dataApi.get(`${uri.type}s/${uri.nyplSource}/${uri.id}`)
-        if (record.statusCode !== 404) {
-          fs.writeFile(`./events/decoded/${uri.id}.json`, JSON.stringify(record), err => {
-            if (err) {
-              console.error(err);
-            }
-          })
-          await exec(`node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env --ids ${uri.id} --nyplType ${uri.type} events/decoded/${uri.id}.json events/encoded/${uri.id}.json`, (e) => {
-            if (e) console.error(e)
-          })
-        }
-      } catch (error) {
-        console.log(error)
+  urisPlus = await Promise.all(urisPlus.map(async (uri) => {
+    try {
+      const record = await dataApi.get(`${uri.type}s/${uri.nyplSource}/${uri.id}`)
+      if (record.type !== 'exception') {
+        fs.writeFile(`./events/decoded/${uri.id}.json`, JSON.stringify(record), err => {
+          if (err) {
+            console.error(err);
+          }
+        })
+        return uri
       }
+    } catch (error) {
+      console.log(error)
     }
-
   }))
+
+  const batchedUrisByType = { bib: '', item: '', holding: '' }
+  urisPlus.filter((uri) => uri).forEach((uri) => {
+    batchedUrisByType[uri.type] += `events/decoded/${uri.id}.json,`
+  })
+
+  const types = Object.keys(batchedUrisByType)
+  Promise.all(types.map(async (type) => {
+    if (batchedUrisByType[type].length > 1) {
+      console.log(type[0].toUpperCase() + type.substring(1), batchedUrisByType[type], '\n')
+      await exec(`node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env ${batchedUrisByType[type].slice(0, -1)} events/encoded/${type}.json https://platform.nypl.org/api/v0.1/current-schemas/${type[0].toUpperCase() + type.substring(1)}`, (e) => {
+        if (e) console.error(e)
+      })
+    }
+  }))
+
 }
+
+writeDecodedAndEncodedRecords()
 
 module.exports = writeDecodedAndEncodedRecords
