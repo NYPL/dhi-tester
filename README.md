@@ -39,6 +39,10 @@ NYPL_OAUTH_KEY=[decrypted key]
 NYPL_OAUTH_SECRET=[decrypted secret]
 ```
 
+### Troubleshooting
+- make sure discovery-api-indexer is at most recent version in root level package.json
+- 
+
 
 
 
