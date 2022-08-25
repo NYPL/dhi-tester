@@ -24,7 +24,31 @@ describe('v1 writes the same record to elastic search as v2', () => {
       delete record._source.updatedAt
       return record._source
     })
-    
+    // WIP: Log difference between two indexes
+    // v1Records.forEach((v1Record, i) => {
+    //   const v2Record = v2Records[i]
+    //   Object.keys(v1Record).forEach((recordProp, i) => {
+    //     const v1RecordPropValue = v1Record[recordProp]
+    //     const v2RecordPropValue = v2Record[recordProp]
+
+    //     // These conditionals are here to log discrepancies between the indices
+    //     if (Array.isArray(v1RecordPropValue)) {
+    //       if (v1RecordPropValue[0] !== v2RecordPropValue[0]) {
+    //         console.log(`Record mismatch on record: v1: ${v1Record.uri}, v2: ${v2Record.uri}, property: ${recordProp} \n v1: ${v1RecordPropValue} v2: ${v2RecordPropValue}`)
+    //       }
+    //     }
+    //     else if (typeof (v1RecordPropValue) === 'string') {
+    //       if (v1RecordPropValue !== v2RecordPropValue) {
+    //         console.log(`Record mismatch on record: v1: ${v1Record.uri}, v2: ${v2Record.uri}, property: ${recordProp} \n v1: ${v1RecordPropValue} v2: ${v2RecordPropValue}`)
+    //       }
+    //     }
+    //     else if (typeof (v1RecordPropValue) === 'object') {
+    //       if (JSON.stringify(v1RecordPropValue) !== JSON.stringify(v2RecordPropValue[0])) {
+    //         console.log(`Record mismatch on record: v1: ${v1Record.uri}, v2: ${v2Record.uri}, property: ${recordProp} \n v1: ${JSON.stringify(v1RecordPropValue)} v2: ${JSON.stringify(v2RecordPropValue)}`)
+    //       }
+    //     }
+    //   })
+    // })
     expect(v1Records).to.deep.equal(v2Records)
   })
 })
