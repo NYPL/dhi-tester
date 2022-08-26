@@ -32,6 +32,9 @@ To rebuild unencoded records and encoded events, run `npm run rebuild-events`. I
 3. Repeat steps 1+2 replacing v1 with v2 in the scripts
 4. Check that the ES indices are identical: `npm test`
 
+### Cleanup
+To delete Elastic Indexes created, run `node cleanup-elastic-index` 
+
 ### Troubleshooting
 - make sure discovery-api-indexer is at most recent version in root level package.json
 - 
