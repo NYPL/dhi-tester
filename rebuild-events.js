@@ -11,14 +11,24 @@ dotenv.config({ path: './.env' })
 
 const input = fs.readFileSync('./uris.csv', 'utf8')
 
+/**
+ * Writes unencoded records from bib, item, or holding service to events/encoded. Batches those records into kinesis events by record type and writes encoded events to events/encoded
+ *
+ * Depends on encrypted Platform API creds in .env
+ *
+ * Usage:
+ *   node rebuild-events
+ */
+
 const writeDecodedAndEncodedRecords = async () => {
   let records = parse(input, {
     columns: true,
     skip_empty_lines: true
   })
 
-  // TO DO: filter out empty record objects
-  let urisPlus = records.map((record) => record.URI).map((uri) => NyplSourceMapper.instance().splitIdentifier(uri)).filter((uri) => uri && uri.type && uri.id && uri.nyplSource)
+  let urisPlus = records.map((record) => record.URI)
+    .map((uri) => NyplSourceMapper.instance().splitIdentifier(uri))
+    .filter((uri) => uri && uri.type && uri.id && uri.nyplSource)
 
   const [oauth_key, base_url, oauth_secret, oauth_url] = await Promise.all([
     decrypt(process.env['NYPL_OAUTH_KEY']),
@@ -45,26 +55,25 @@ const writeDecodedAndEncodedRecords = async () => {
         return uri
       } else return { ...uri, exception: true }
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }))
 
   const batchedUrisByType = { bib: '', item: '', holding: '' }
-  urisPlus.filter(uri => !uri.exception).forEach((uri) => {
-    batchedUrisByType[uri.type] += `events/decoded/${uri.id}.json,`
-  })
+
+  urisPlus.filter(uri => !uri.exception)
+    .forEach((uri) => {
+      batchedUrisByType[uri.type] += `events/decoded/${uri.id}.json,`
+    })
 
   const types = Object.keys(batchedUrisByType)
+
   Promise.all(types.map(async (type) => {
     if (batchedUrisByType[type].length > 1) {
       console.log(type[0].toUpperCase() + type.substring(1), batchedUrisByType[type], '\n')
-      try {
-        await exec(`node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env ${batchedUrisByType[type].slice(0, -1)} events/encoded/${type}.json https://platform.nypl.org/api/v0.1/current-schemas/${type[0].toUpperCase() + type.substring(1)}`, (e) => {
-          if (e) console.error(e)
-        })
-      } catch (e) {
-        console.log(e)
-      }
+      exec(`node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env ${batchedUrisByType[type].slice(0, -1)} events/encoded/${type}.json https://platform.nypl.org/api/v0.1/current-schemas/${type[0].toUpperCase() + type.substring(1)}`, (e) => {
+        if (e) console.error(e)
+      })
     }
   }))
 

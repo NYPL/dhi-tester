@@ -13,7 +13,7 @@ describe('v1 writes the same record to elastic search as v2', () => {
       console.log(e)
     }
   })
-  it('does the thing', async () => {
+  it('writes identical indexes to elastic search', async () => {
     let v1Records = await axios.post(esUri + '/test-index-v1/resource/_search', { size: 1000 })
     v1Records = v1Records.data.hits.hits.map((record) => {
       delete record._source.updatedAt
