@@ -10,7 +10,8 @@ This repo is a testing framework meant to facilitate comparing output of a new i
 # Config
 In addition to the config files required by v1 and v2 indexers, you will need:
 - .env file in the root of the repo
-- `sam.test.yml` in the root of v1 and v2. For v1, this should be identical to `sam.qa.yml` in discovery-hybrid-indexer, with one change: replace ELASTIC_SEARCH_RESOURCES_INDEX with test-index-v1 or -v2
+    - in .env, update TEST_INDEX to test-index-{yourinitials}. ex: test-index-vk
+- `sam.test.yml` in the root of v1 and v2. For v1, this should be identical to `sam.qa.yml` in discovery-hybrid-indexer, with one change: replace the value for ELASTIC_SEARCH_RESOURCES_INDEX with test-index-{your initials}-v1 or -v2
 
 ### Setting up environment:
 0. `nvm use && npm i`
