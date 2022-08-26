@@ -14,12 +14,12 @@ describe('v1 writes the same record to elastic search as v2', () => {
     }
   })
   it('does the thing', async () => {
-    let v1Records = await axios.post(esUri + '/test-index-v1/resource/_search', {})
+    let v1Records = await axios.post(esUri + '/test-index-v1/resource/_search', { size: 1000 })
     v1Records = v1Records.data.hits.hits.map((record) => {
       delete record._source.updatedAt
       return record._source
     })
-    let v2Records = await axios.post(esUri + '/test-index-v2/resource/_search', {})
+    let v2Records = await axios.post(esUri + '/test-index-v2/resource/_search', { size: 1000 })
     v2Records = v2Records.data.hits.hits.map((record) => {
       delete record._source.updatedAt
       return record._source
