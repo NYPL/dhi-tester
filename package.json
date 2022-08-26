@@ -6,7 +6,7 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha test -r dotenv/config --timeout 10000",
     "rebuild-events": "node rebuild-events.js",
-    "start-es": "node -r dotenv/config create-elastic-index.js",
+    "recreate-es-indexes": "node -r dotenv/config create-elastic-index.js",
     "send-events-v1": "cd v1; for file in ../events/encoded/*.json; do aws lambda invoke --function-name \"DiscoveryHybridIndexer\" --endpoint-url \"http://127.0.0.1:3001\" --payload file://$file out.txt --cli-binary-format raw-in-base64-out; done",
     "send-events-v2": "cd v2; for file in ../events/encoded/*.json; do aws lambda invoke --function-name \"DiscoveryHybridIndexer\" --endpoint-url \"http://127.0.0.1:3001\" --payload file://$file out.txt --cli-binary-format raw-in-base64-out; done",
     "start-lambda-v1": "cd v1; sam local start-lambda -t sam.test.yml",
