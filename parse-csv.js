@@ -4,9 +4,10 @@ const { exec } = require('child_process')
 const NyplClient = require('@nypl/nypl-data-api-client')
 const dotenv = require('dotenv')
 const NyplSourceMapper = require('discovery-store-models/lib/nypl-source-mapper')
+const { decrypt } = require('discovery-api-indexer/lib/kms-helper')
 
 
-dotenv.config({ path: './decrypted.env' })
+dotenv.config({ path: './.env' })
 
 const input = fs.readFileSync('./uris.csv', 'utf8')
 
@@ -19,11 +20,17 @@ const writeDecodedAndEncodedRecords = async () => {
   // TO DO: filter out empty record objects
   let urisPlus = records.map((record) => record.URI).map((uri) => NyplSourceMapper.instance().splitIdentifier(uri)).filter((uri) => uri && uri.type && uri.id && uri.nyplSource)
 
+  const [oauth_key, base_url, oauth_secret, oauth_url] = await Promise.all([
+    decrypt(process.env['NYPL_OAUTH_KEY']),
+    decrypt(process.env['NYPL_API_BASE_URL']),
+    decrypt(process.env['NYPL_OAUTH_SECRET']),
+    decrypt(process.env['NYPL_OAUTH_URL'])])
+
   const dataApi = new NyplClient({
-    oauth_key: process.env['NYPL_OAUTH_KEY'],
-    base_url: process.env['NYPL_API_BASE_URL'],
-    oauth_secret: process.env['NYPL_OAUTH_SECRET'],
-    oauth_url: process.env['NYPL_OAUTH_URL']
+    oauth_key,
+    base_url,
+    oauth_secret,
+    oauth_url
   })
 
   urisPlus = await Promise.all(urisPlus.map(async (uri) => {
@@ -52,9 +59,9 @@ const writeDecodedAndEncodedRecords = async () => {
     if (batchedUrisByType[type].length > 1) {
       console.log(type[0].toUpperCase() + type.substring(1), batchedUrisByType[type], '\n')
       try {
-      await exec(`node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env ${batchedUrisByType[type].slice(0, -1)} events/encoded/${type}.json https://platform.nypl.org/api/v0.1/current-schemas/${type[0].toUpperCase() + type.substring(1)}`, (e) => {
-        if (e) console.error(e)
-      })
+        await exec(`node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env ${batchedUrisByType[type].slice(0, -1)} events/encoded/${type}.json https://platform.nypl.org/api/v0.1/current-schemas/${type[0].toUpperCase() + type.substring(1)}`, (e) => {
+          if (e) console.error(e)
+        })
       } catch (e) {
         console.log(e)
       }
