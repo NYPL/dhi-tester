@@ -17,8 +17,8 @@ In addition to the config files required by v1 and v2 indexers, you will need:
 0. `nvm use && npm i`
 1. Clone the latest v1 discovery-hybrid-indexer into the root of this directory. Rename the directory v1
 2. Clone the new v2 indexer you are testing into a different directory. Name this directory v2
-3. Create v1/sam.test.yml . Copy the contents of sam.qa.yml into it, and replace ELASTIC_RESOURCES_INDEX with "test-index-v1". Make sure there is a v2/sam.test.yml that has the necessary config, along with ELASTIC_RESOURCES_INDEX = test-index-v2.
-4. Create a blank Elastic Search indexes for v1 and v2 to write to: `npm run start-es`
+3. Create v1/sam.test.yml . Copy the contents of sam.qa.yml into it, and replace ELASTIC_RESOURCES_INDEX with test-index-{your initials}-v1. Make sure there is a v2/sam.test.yml that has the necessary config, along with ELASTIC_RESOURCES_INDEX = test-index-{your initials}-v2.
+4. Create a blank Elastic Search indexes for v1 and v2 to write to: `npm run recreate-es-indexes`
 5. Install v1 and v2 as necessary
 
 ### URIs for indexing

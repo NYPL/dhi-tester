@@ -11,8 +11,8 @@ const init = async () => {
   esUtils.setConnection(esUri)
   // Create new index. Second param, deleteIfExists, ensures that the new index will overwrite
   // and old one with the same name.
-  await esUtils.resources.prepare(process.env['TEST_INDEX'] + 'v1', true)
-  await esUtils.resources.prepare(process.env['TEST_INDEX'] + 'v2', true)
+  await esUtils.resources.prepare(process.env['TEST_INDEX'] + '-v1', true)
+  await esUtils.resources.prepare(process.env['TEST_INDEX'] + '-v2', true)
   console.log(`Dropped and recreated ${process.env['TEST_INDEX']}-v1 and ${process.env['TEST_INDEX']}-v2`)
 }
 
