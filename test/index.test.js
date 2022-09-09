@@ -3,6 +3,7 @@ const { decryptElasticCreds } = require('discovery-api-indexer/lib/kms-helper')
 const aws = require('aws-sdk')
 const expect = require('chai').expect
 const dotenv = require('dotenv')
+const { printDiff } = require('../v1/test/diff-report')
 
 dotenv.config({ path: './.env' })
 
@@ -25,6 +26,12 @@ describe('v1 writes the same record to elastic search as v2', async () => {
           return record._source
         })
       }))
+    v1Records.forEach((v1Record) => {
+      v2Record = v2Records.find((record2) => {
+        return v1Record.uri === record2.uri
+      })
+      printDiff(v1Record, v2Record)
+    })
     expect(v1Records).to.deep.equal(v2Records)
   })
 })
