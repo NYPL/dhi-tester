@@ -8,6 +8,7 @@ const { printDiff } = require('../v1/test/diff-report')
 dotenv.config({ path: './.env' })
 
 describe('v1 writes the same record to elastic search as v2', async () => {
+  let exclude_properties
   let esUri = 'https://'
   before(async () => {
     aws.config.credentials = new aws.SharedIniFileCredentials({ profile: "nypl-digital-dev" })
@@ -16,13 +17,17 @@ describe('v1 writes the same record to elastic search as v2', async () => {
     } catch (e) {
       console.log(e)
     }
+    // These are properties known to be indexed differently in the new indexer.
+    exclude_properties = process.env.EXCLUDED_PROPERTIES.split(',')
   })
   it('writes identical indexes to elastic search', async () => {
     let [v1Records, v2Records] = await Promise.all(['v1', 'v2']
       .map(async (dhiVersion) => {
         const esResponse = await axios.post(`${esUri}/${process.env['TEST_INDEX']}-${dhiVersion}/resource/_search`, { size: 1000 })
         return esResponse.data.hits.hits.map((record) => {
-          delete record._source.updatedAt
+          exclude_properties.forEach((prop) => {
+            delete record._source[prop]
+          })
           return record._source
         })
       }))
