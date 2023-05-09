@@ -6,7 +6,7 @@ const dotenv = require('dotenv')
 dotenv.config({ path: './.env' })
 
 const init = async () => {
-  aws.config.credentials = new aws.SharedIniFileCredentials({profile: "nypl-digital-dev"})
+  aws.config.credentials = new aws.SharedIniFileCredentials({ profile: "nypl-digital-dev" })
   const esUri = await decryptElasticCreds()
   esUtils.setConnection(esUri)
   // Create new index. Second param, deleteIfExists, ensures that the new index will overwrite
