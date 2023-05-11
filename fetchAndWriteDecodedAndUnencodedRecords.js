@@ -12,7 +12,7 @@ dotenv.config({ path: './.env' })
 const input = fs.readFileSync('./uris.csv', 'utf8')
 
 /**
- * Exracts uris from uris.csv, and fetches those records from bib, item, or holding service. Writes those records to events/decoded. Batches those records into kinesis events by record type and writes encoded events to events/encoded
+ * Exracts uris from uris.csv, and fetches those records from bib, item, or holding service. Writes those records to events/unencoded. Batches those records into kinesis events by record type and writes encoded events to events/encoded
  *
  * Depends on encrypted Platform API creds in .env
  *
@@ -20,7 +20,7 @@ const input = fs.readFileSync('./uris.csv', 'utf8')
  *   node rebuild-events
  */
 
-const fetchAndWriteDecodedAndEncodedRecords = async () => {
+const fetchAndWriteUnencodedAndEncodedRecords = async () => {
   let records = parse(input, {
     columns: true,
     skip_empty_lines: true
@@ -47,33 +47,37 @@ const fetchAndWriteDecodedAndEncodedRecords = async () => {
     try {
       const record = await dataApi.get(`${uri.type}s/${uri.nyplSource}/${uri.id}`)
       if (record.type !== 'exception') {
-        fs.writeFile(`./events/decoded/${uri.id}.json`, JSON.stringify(record.data), err => {
+        fs.writeFile(`./events/unencoded/${uri.id}.json`, JSON.stringify(record.data), err => {
           if (err) {
             console.error(err);
           }
         })
-        return {...uri, record}
+        return {...uri, record: record.data}
       }
     } catch (error) {
       console.error(error)
     }
-  })).filter(uri => uri)
-
+  }))
+  urisPlus = urisPlus.filter(uri => uri)
   // NyplStreamsClient exposes functions to encode and write to kinesis streams
-  const streamClient = new NyplStreamsClient()
+  // TODO: kms decrypt the api base url and pass into nypl streams client
+  const streamClient = new NyplStreamsClient({ nyplDataApiClientBase: base_url })
   // loop through all of the uris. get the encoded version of the record, and add it to relevant array.
-  const encodedRecordsByType = Promise.all(urisPlus.reduce(async (encodedRecords, uriObject) => {
-    const schemaName = uriObject.type
+  const encodedRecords = await Promise.all(urisPlus.map(async (uriObject) => {
+    const schemaName = uriObject.type.slice(0, 1).toUpperCase() + uriObject.type.slice(1)
     const record = uriObject.record
-    const encodedRecord = await streamClient.encodeData(schemaName, record)
-    encodedRecords[schemaName].concat(encodedRecord)
-    return encodedRecords
-  }, {Bib:[], Item:[], Holding:[]}))
+    let encodedRecord
+    try{
+      encodedRecord = await streamClient.encodeData(schemaName, record)
+    } catch(e) {
+      console.error(e)
+    }
+    return {encodedRecord, schemaName}
+  }))
 
-  // write arrays to encoded/type.json
-  Object.keys(encodedRecordsByType).map((recordType) => {
-    const events = encodedRecordsByType[recordType].map((encodedRecord) => {
-      return {
+  // loop through encoded records, sorting by record type
+  const recordsByType = encodedRecords.reduce((_recordsByType, {encodedRecord, schemaName}) => {
+      _recordsByType[schemaName] = _recordsByType[schemaName].concat({
         "kinesis": {
           "kinesisSchemaVersion": "1.0",
           "partitionKey": "s1",
@@ -87,15 +91,19 @@ const fetchAndWriteDecodedAndEncodedRecords = async () => {
         "eventName": "aws:kinesis:record",
         "invokeIdentityArn": "arn:aws:iam::EXAMPLE",
         "awsRegion": "us-east-1",
-        "eventSourceARN": `the-first-part-of-the-arn-does-not-matter...this-part-does:/${recordType}`
-      }
+        "eventSourceARN": `the-first-part-of-the-arn-does-not-matter...this-part-does:/${schemaName}`
+      })
+      return _recordsByType
+    }, {Bib: [], Item: [], Holding: []})
+
+    Object.keys(recordsByType).forEach((recordType) => {
+      fs.writeFile(`./events/encoded/${recordType}.json`, JSON.stringify({Records: recordsByType[recordType]}), err => {
+        if (err) {
+          console.error(err);
+        }
     })
-    fs.writeFile(`./events/encoded/${recordType}.json`, JSON.stringify({Records: events}), err => {
-      if (err) {
-        console.error(err);
-      }
+
     })
-  })
 }
 
-fetchAndWriteDecodedAndEncodedRecords()
+fetchAndWriteUnencodedAndEncodedRecords()
