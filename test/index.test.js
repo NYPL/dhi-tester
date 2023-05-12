@@ -21,9 +21,9 @@ describe('v1 writes the same record to elastic search as v2', async () => {
       console.log(e)
     }
     // These are properties known to be indexed differently in the new indexer.
-    excludeBibProperties = process.env.EXCLUDE_BIB_PROPERTIES.split(',')
-    excludeItemProperties = process.env.EXCLUDE_ITEM_PROPERTIES.split(',')
-    excludeHoldingProperties = process.env.EXCLUDE_HOLDING_PROPERTIES.split(',')
+    excludeBibProperties = process.env.EXCLUDE_BIB_PROPERTIES?.split(',')
+    excludeItemProperties = process.env.EXCLUDE_ITEM_PROPERTIES?.split(',')
+    excludeHoldingProperties = process.env.EXCLUDE_HOLDING_PROPERTIES?.split(',')
   })
   it('writes identical indexes to elastic search', async () => {
     let esResponse
@@ -38,15 +38,15 @@ describe('v1 writes the same record to elastic search as v2', async () => {
           } else throw e
         }
         return esResponse.data.hits.hits.map((record) => {
-          excludeBibProperties.forEach((bibProp) => {
+          excludeBibProperties?.forEach((bibProp) => {
             delete record._source[bibProp]
           })
-          excludeItemProperties.forEach((itemProp) => {
+          excludeItemProperties?.forEach((itemProp) => {
             record._source.items.forEach((item) => {
               delete item[itemProp]
             })
           })
-          excludeHoldingProperties.forEach((holdingProp) => {
+          excludeHoldingProperties?.forEach((holdingProp) => {
             record._source.holdings.forEach((holding) => {
               delete holding[holdingProp]
             })
