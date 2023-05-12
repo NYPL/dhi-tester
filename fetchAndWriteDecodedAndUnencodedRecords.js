@@ -69,6 +69,7 @@ const fetchAndWriteUnencodedAndEncodedRecords = async () => {
     let encodedRecord
     try{
       encodedRecord = await streamClient.encodeData(schemaName, record)
+      encodedRecord =  encodedRecord.toString('base64')
     } catch(e) {
       console.error(e)
     }
