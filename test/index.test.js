@@ -33,7 +33,10 @@ describe('v1 writes the same record to elastic search as v2', async () => {
           esResponse = await axios
             .post(`${esUri}/${process.env['TEST_INDEX']}-${dhiVersion}/resource/_search`, { size: 1000 })
         } catch (e) {
-          if(e.response.status === 403){ 
+          if(e.code === 'ECONNREFUSED'){
+            throw new Error('ElasticSearch connection refused')
+          }
+          if(e.response?.status === 403){ 
             throw new Error('Elastic Search permissions error. Make sure you are on a permitted IP address or using the tunnel and swapped out localhost:port for the ES URI in the .env file')
           } else throw e
         }
