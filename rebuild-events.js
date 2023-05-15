@@ -20,7 +20,7 @@ const input = fs.readFileSync('./uris.csv', 'utf8')
  *   node rebuild-events
  */
 
-const writeDecodedAndEncodedRecords = async () => {
+const writeUnencodedAndEncodedRecords = async () => {
   let records = parse(input, {
     columns: true,
     skip_empty_lines: true
@@ -47,7 +47,7 @@ const writeDecodedAndEncodedRecords = async () => {
     try {
       const record = await dataApi.get(`${uri.type}s/${uri.nyplSource}/${uri.id}`)
       if (record.type !== 'exception') {
-        fs.writeFile(`./events/decoded/${uri.id}.json`, JSON.stringify(record.data), err => {
+        fs.writeFile(`./events/unencoded/${uri.id}.json`, JSON.stringify(record.data), err => {
           if (err) {
             console.error(err);
           }
@@ -63,7 +63,7 @@ const writeDecodedAndEncodedRecords = async () => {
 
   urisPlus.filter(uri => !uri.exception)
     .forEach((uri) => {
-      batchedUrisByType[uri.type] += `events/decoded/${uri.id}.json,`
+      batchedUrisByType[uri.type] += `events/unencoded/${uri.id}.json,`
     })
 
   const types = Object.keys(batchedUrisByType)
@@ -79,6 +79,6 @@ const writeDecodedAndEncodedRecords = async () => {
 
 }
 
-writeDecodedAndEncodedRecords()
+writeUnencodedAndEncodedRecords()
 
-module.exports = writeDecodedAndEncodedRecords
+module.exports = writeUnencodedAndEncodedRecords
