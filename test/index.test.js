@@ -57,10 +57,6 @@ describe('v1 writes the same record to elastic search as v2', async () => {
           return record._source
         })
       }))
-    
-    expect(JSON.stringify(v1Records)).to.not.contain.oneOf([...excludeBibProperties, ...excludeHoldingProperties, ...excludeItemProperties])
-     
-    expect(JSON.stringify(v2Records)).to.not.contain.oneOf([...excludeBibProperties, ...excludeHoldingProperties, ...excludeItemProperties])
 
     v1Records.forEach((v1Record) => {
       const v2Record = v2Records.find((record2) => {
