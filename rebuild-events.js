@@ -47,7 +47,7 @@ const writeUnencodedAndEncodedRecords = async () => {
     try {
       const record = await dataApi.get(`${uri.type}s/${uri.nyplSource}/${uri.id}`)
       if (record.type !== 'exception') {
-        fs.writeFile(`./events/unencoded/${uri.id}.json`, JSON.stringify(record.data), err => {
+        fs.writeFile(`./events/decoded/${uri.id}.json`, JSON.stringify(record.data), err => {
           if (err) {
             console.error(err);
           }
@@ -63,7 +63,7 @@ const writeUnencodedAndEncodedRecords = async () => {
 
   urisPlus.filter(uri => !uri.exception)
     .forEach((uri) => {
-      batchedUrisByType[uri.type] += `events/unencoded/${uri.id}.json,`
+      batchedUrisByType[uri.type] += `events/decoded/${uri.id}.json,`
     })
 
   const types = Object.keys(batchedUrisByType)
