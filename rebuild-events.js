@@ -6,7 +6,7 @@ const dotenv = require('dotenv')
 const NyplSourceMapper = require('discovery-store-models/lib/nypl-source-mapper')
 const { decrypt } = require('discovery-api-indexer/lib/kms-helper')
 
-
+dotenv.config({ path: './common.env' })
 dotenv.config({ path: './.env' })
 
 const input = fs.readFileSync('./uris.csv', 'utf8')
@@ -68,15 +68,22 @@ const writeUnencodedAndEncodedRecords = async () => {
 
   const types = Object.keys(batchedUrisByType)
 
-  Promise.all(types.map(async (type) => {
-    if (batchedUrisByType[type].length > 1) {
-      console.log(type[0].toUpperCase() + type.substring(1), batchedUrisByType[type], '\n')
-      exec(`node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env ${batchedUrisByType[type].slice(0, -1)} events/encoded/${type}.json https://platform.nypl.org/api/v0.1/current-schemas/${type[0].toUpperCase() + type.substring(1)}`, (e) => {
-        if (e) console.error(e)
-      })
-    }
-  }))
+  await Promise.all(
+    types.map((type) => {
+      return new Promise((resolve, reject) => {
+        if (!batchedUrisByType[type].length) return resolve()
 
+        console.log(type[0].toUpperCase() + type.substring(1), batchedUrisByType[type], '\n')
+        const command = `node v1/node_modules/pcdm-store-updater/kinesify-data.js --profile nypl-digital-dev --envfile decrypted.env ${batchedUrisByType[type].slice(0, -1)} events/encoded/${type}.json https://platform.nypl.org/api/v0.1/current-schemas/${type[0].toUpperCase() + type.substring(1)}`
+        exec(command, (e) => {
+          if (e) return reject(e)
+          return resolve()
+        })
+      })
+    })
+  )
+
+  console.log('Done rebuilding events to events/encoded/*.json')
 }
 
 writeUnencodedAndEncodedRecords()

@@ -1,1 +1,8 @@
 node_modules
+
+# Ignore the developer specific env file:
+.env
+
+# Ignore the indexer candidates:
+v1
+v2
