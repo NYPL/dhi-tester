@@ -1,5 +1,5 @@
 # DHI TESTER
-This repo is a testing framework meant to facilitate comparing output of a new indexer lambda to replace the old discovery-hybrid-indexer (aka DHI). All scripts mentioned in this readme are written to be run from the root directory. Throughout this Readme, v1 refers to the currently deployed version of discovery-hybrid-indexer, and v2 refers to the new indexer that is being tested. Note that the v2 directory needs to have a sam.test.yml file configured with all necessary environment variables. You can use the sam.qa.yml file in the v1 DHI as a template. 
+This repo is a testing framework meant to facilitate comparing output of a new indexer lambda to replace the old discovery-hybrid-indexer (aka DHI). All scripts mentioned in this readme are written to be run from the root directory. Throughout this Readme, v1 refers to the currently deployed version of discovery-hybrid-indexer, and v2 refers to the new indexer that is being tested. Note that the v2 directory needs to have a sam.test.yml file configured with all necessary environment variables. You can use the sam.qa.yml file in the v1 DHI as a template.
 
 ## System Requirements
 - aws sam cli must be installed and configured.
@@ -24,21 +24,30 @@ In addition to the config files required by v1 and v2 indexers, you will need:
 ### URIs for indexing
 To update uris.csv, export from this google sheet https://docs.google.com/spreadsheets/d/1a2QKIsRJrEPel2K5znzxnwoREzDWJOMZ6nIfz2EsDRg/edit#gid=0 and save in the root as uris.csv
 
-### Update events 
+### Update events
 To rebuild unencoded records and encoded events, run `npm run rebuild-events`. If faced with the error: `Unable to load module 'csv-parse/sync'`, try running `nvm use`.
 ### Running tests
 1. Start up local lambda for v1: `npm run start-lambda-v1`
-2. In a separate terminal, send the events to the lambda: `npm run send-events-v1`. 
+2. In a separate terminal, send the events to the lambda: `npm run send-events-v1`.
 3. Repeat steps 1+2 replacing v1 with v2 in the scripts
 4. Check that the ES indices are identical: `npm test`
+### Readable Reporting for Test Results
+Once you have run the tests, you may want a more readable report of the differences between v1 and v2. This command:
+```
+node test/run-diffUtil.js
+```
+
+will print a complete report of the differences between v1 and v2. The output JSON has:
+- bibUris pointing to objects with v1 and v2 attributes for that bib
+- items and holdings attributes, each with item identifiers pointing to v1 and v2 versions of those items and holdings
+- diffFields attribute, which contains `addded`, `deleted`, and `updated` objects. Each object has a key for each changed field, and each field points to a list of bibs by uri, with v1 and v2 of that field
+- similarly, there is an `itemDiffFields` attribute.
+
+This report can be very long, so it is also helpful to open a node terminal, and require `test/diffUtil`. Running the `records` method will generate the above JSON.
 
 ### Cleanup
-To delete Elastic Indexes created, run `node cleanup-elastic-index` 
+To delete Elastic Indexes created, run `node cleanup-elastic-index`
 
 ### Troubleshooting
 - make sure discovery-api-indexer is at most recent version in root level package.json
-- 
-
-
-
-
+-
