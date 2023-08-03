@@ -3,6 +3,7 @@ const { decryptElasticCreds } = require('discovery-api-indexer/lib/kms-helper')
 const aws = require('aws-sdk')
 const dotenv = require('dotenv')
 
+dotenv.config({ path: './common.env' })
 dotenv.config({ path: './.env' })
 
 const init = async () => {

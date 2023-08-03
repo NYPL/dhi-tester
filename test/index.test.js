@@ -6,6 +6,7 @@ const dotenv = require('dotenv')
 const { printDiff } = require('../v1/test/diff-report')
 const https = require('https')
 
+dotenv.config({ path: './common.env' })
 dotenv.config({ path: './.env' })
 
 describe('v1 writes the same record to elastic search as v2', async () => {
@@ -24,6 +25,7 @@ describe('v1 writes the same record to elastic search as v2', async () => {
     excludeBibProperties = process.env.EXCLUDE_BIB_PROPERTIES?.split(',')
     excludeItemProperties = process.env.EXCLUDE_ITEM_PROPERTIES?.split(',')
     excludeHoldingProperties = process.env.EXCLUDE_HOLDING_PROPERTIES?.split(',')
+    excludeCheckInBoxProperties = process.env.EXCLUDE_CHECKIN_BOX_PROPERTIES?.split(',')
   })
   it('writes identical indexes to elastic search', async () => {
     let esResponse
@@ -52,6 +54,13 @@ describe('v1 writes the same record to elastic search as v2', async () => {
           excludeHoldingProperties?.forEach((holdingProp) => {
             record._source.holdings.forEach((holding) => {
               delete holding[holdingProp]
+            })
+          })
+          record._source.holdings.forEach((holding) => {
+            holding.checkInBoxes?.forEach((box) => {
+              excludeCheckInBoxProperties?.forEach((prop) => {
+                delete box[prop]
+              })
             })
           })
           return record._source
