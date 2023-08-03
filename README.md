@@ -51,7 +51,10 @@ Check that the ES indices are identical: `npm test`
 
 To delete Elastic Indexes created, run `node cleanup-elastic-index`
 
-### Troubleshooting
+## Troubleshooting
 
-Getting "strict mapping" errors when writing documents to ES?
-- Make sure discovery-api-indexer is at most recent version in root level package.json. You may need to run `npm i github:NYPL-discovery/discovery-api-indexer#v1.8.0` (or whatever the latest tag is) manually in the Terminal to force an install of the latest tag.
+### Getting "strict mapping" errors when writing documents to ES?
+
+Make sure discovery-api-indexer is at most recent version in root level package.json. You may need to run `npm i github:NYPL-discovery/discovery-api-indexer#v1.8.0` (or whatever the latest tag is) manually in the Terminal to force an install of the latest tag.
+
+Note that DHI-Tester uses the `discovery-api-indexer` module to create the index mappings for _both_ v1 and v1 indexer candidates. It does this because the index mappings are presumed identical. The official ES mapping for the ResearchCatalogIndexer (i.e. v2) [lives here](https://github.com/NYPL/research-catalog-indexer/blob/main/lib/elastic-search/index-schema.js), although it has not yet been used to create indexes for testing or otherwise.
