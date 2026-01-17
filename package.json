@@ -17,7 +17,7 @@
   "dependencies": {
     "@nypl/nypl-streams-client": "^1.0.0",
     "aws-sdk": "^2.1112.0",
-    "axios": "^0.26.1",
+    "axios": "^0.30.2",
     "chai": "^4.3.6",
     "csv-parse": "^5.3.0",
     "deep-object-diff": "^1.1.9",
