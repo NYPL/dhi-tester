@@ -23,6 +23,6 @@
     "deep-object-diff": "^1.1.9",
     "discovery-api-indexer": "github:NYPL-discovery/discovery-api-indexer#v1.8.0",
     "dotenv": "^16.0.0",
-    "mocha": "^9.2.2"
+    "mocha": "^11.7.5"
   }
 }
